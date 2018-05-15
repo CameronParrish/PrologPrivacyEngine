@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">   
+    <head>
+        <title>Example</title>
+        <meta name="author" content="Torbjörn Lager">
+        <link rel="stylesheet" href="css/final.css">
+    </head>
+    <body>
+        <h1>Example Prolog Web App</h1>
+        <!-- Here starts the part of the GUI that was already in part 2 -->
+        <h3>Prolog Code</h3>
+        <div>
+        </div>
+        <div>
+            <input id="query" type="text" placeholder="Prolog Code">
+        </div>
+        <div>
+            <button id="ask-btn">Ask</button>
+        </div>
+        <!-- Here start the new part for updating the application db -->
+        <h3>PiQL Code</h3>
+        <div>
+            <input id="X" class="arg" type="text" placeholder="PiQL Code">
+        </div>
+        <div>
+            <button id="assert-btn">PiQL Parse</button>
+        </div>
+        <h3>Output</h3>
+        <div id="output"></div>
+        <script src="../jquery/jquery-2.0.3.min.js"></script>
+    <script src="tau-prolog.js"></script>
+    <script id="preds.pl" type="text/prolog">
+        man('Cameron'). 
+        man('Jamil').
+        p(5).
+        p(8).
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#ask-btn").on("click", ask);
+            $("#assert-btn").on("click", function() {
+                PiQL_To_Prolog("#X".val);
+            });
+        });
+
+        function ask(){
+            var session = pl.create();
+            session.consult( "preds.pl" );
+            var query = $("#query").val();
+            var myData = $("#X").val();
+            session.query(query);
+            var callback = writeln(callback);
+            session.answer(callback);
+            while(callback != false && callback != undefined){  
+                session.answer(callback);
+            }
+        }
+
+        function PiQL_To_Prolog(PiQL){
+            const objects = [
+                "groups",
+                "members",
+                "properties",
+                "contents",
+                "associations"
+            ]
+            const member_titles = [
+                "ingroup",
+
+            ]
+            const privacy_terms= [
+                "public",
+                "private"
+            ]
+            const properties= [
+                "name",
+                "state",
+                "dept",
+                "myage"
+            ]
+            const member_properties= [
+                "profile",
+                "friends",
+                "contents",
+                "signitures"
+            ]
+            const content = [
+                "folder",
+                "file"
+            ]
+
+            function parse(PiQL){
+                
+            }
+        }
+
+        function writeln(string) {
+            $('#output').append(string + "<br />");
+        }
+    </script>
+    </body>
+</html>
